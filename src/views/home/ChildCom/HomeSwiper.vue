@@ -1,5 +1,5 @@
 <template>
-  <swiper>
+  <swiper :banner='banners'>
     <swiper-item v-for="each in banners" :key="each.name">
       <a :href="each.link">
         <img :src="each.image" alt="" />
@@ -17,6 +17,6 @@ export default {
   },
   props: {
     banners:{}
-  }
+  },
 };
 </script>
