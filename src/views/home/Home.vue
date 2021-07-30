@@ -28,12 +28,14 @@
 import HomeRecommend from "@/views/home/ChildCom/HomeRecommend";
 import HomeSwiper from "@/views/home/ChildCom/HomeSwiper";
 import NavBar from "@/components/common/navbar/NavBar";
-import { getHomeMultidata, getHomeGoods } from "@/network/home.js";
+import { getHomeMultidata, getHomeGood } from "@/network/home.js";
 import Feature from "@/views/home/ChildCom/Feature";
 import TabControl from "@/components/content/tabControl/TabControl";
 import GoodList from "@/components/content/goodList/GoodList";
 import BetterScroll from "@/components/common/betterscroll/BetterScroll";
 import BackTop from "@/components/content/backtop/BackTop";
+//防抖函数
+import { debounce } from "@/common/utils";
 
 export default {
   name: "Home",
@@ -67,6 +69,17 @@ export default {
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
   },
+  mounted() {
+    //监听图片加载完成
+    const refresh = debounce(this.$refs.scroll.refresh, 500);
+
+    this.$bus.$on("ImgLoaded", () => {
+      refresh();
+      // this.$refs.scroll &&
+      //   this.$refs.scroll.scroll.refresh() &&
+      // console.log(this.$refs.scroll.scroll);
+    });
+  },
   methods: {
     //监听滚动
     contentScroll(position) {
@@ -83,25 +96,25 @@ export default {
     },
     getHomeGoods(type) {
       const page = this.goods[type].page + 1;
-      getHomeGoods(type, page).then((response) => {
+      getHomeGood(type, page).then((response) => {
         // console.log(response);
         this.goods[type].list.push(...response.data.list);
         this.goods[type].page += 1;
         //刷新BetterScroll
-        this.RefreshScroll();
-        console.log("加载数据");
+        // this.$refs.scroll.scroll.refresh();
+        // console.log(this.$refs.scroll);
       });
     },
 
     //加载更多
     loadMoreData() {
       this.getHomeGoods(this.currenttype);
-      //刷新监听
+      // // 刷新监听
       this.$refs.scroll.finishPullUp();
     },
-    RefreshScroll() {
-      this.$refs.scroll.scroll.refresh();
-    },
+    // RefreshScroll() {
+    //   this.$refs.scroll.scroll.refresh();
+    // },
 
     //数据传递
     tabControlClick(index) {

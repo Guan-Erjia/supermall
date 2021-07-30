@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
     <main-tab-bar class="maintabbar"></main-tab-bar>
   </div>
 </template>
@@ -16,7 +18,7 @@ export default {
 
 <style>
 @import "./assets/css/base.css";
-.maintabbar{
+.maintabbar {
   z-index: 10;
 }
 </style>

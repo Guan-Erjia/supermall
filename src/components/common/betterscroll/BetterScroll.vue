@@ -8,6 +8,7 @@
 <script>
 import BScroll from "better-scroll";
 import Pullup from "@better-scroll/pull-up";
+import {debounce} from "@/common/utils";
 BScroll.use(Pullup);
 
 export default {
@@ -29,10 +30,18 @@ export default {
   },
   methods: {
     scrollTo(x, y, time) {
-      this.scroll.scrollTo(x, y, time);
+      this.scroll && this.scroll.scrollTo && this.scroll.scrollTo(x, y, time);
     },
     finishPullUp() {
-      this.scroll.finishPullUp();
+      this.scroll && this.scroll.scrollTo && this.scroll.finishPullUp();
+    },
+    refresh() {
+      console.log("已更新");
+      this.scroll && this.scroll.refresh();
+    },
+    emitpull() {
+      console.log("---------------");
+      this.$emit("loadMore");
     },
   },
   mounted() {
@@ -45,9 +54,10 @@ export default {
     this.scroll.on("scroll", (position) => {
       this.$emit("scroll", position);
     });
+    const a = debounce(this.emitpull, 200);
     this.scroll.on("pullingUp", () => {
-      console.log("---------------");
-      this.$emit("loadMore");
+      a();
+      // this.$emit("loadMore");
     });
   },
 };

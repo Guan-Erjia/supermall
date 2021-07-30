@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>个人</h2>
-    <better-scroll class="content" :probe-type='0'>
+    <better-scroll class="content" :probe-type='0' :pullUpLoad='true'>
       <ul>
         <li>个人信息1</li>
         <li>个人信息2</li>
