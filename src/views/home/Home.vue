@@ -1,8 +1,12 @@
 <template>
   <div id="home">
-    <nav-bar class="home-nav">
-      <div slot="center">购物街</div>
-    </nav-bar>
+    <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+    <tab-control
+      :title="['流行', '新款', '精选']"
+      @tabControlClick="tabControlClick"
+      ref="tabControl1"
+      v-show="isTabFixed"
+    ></tab-control>
     <better-scroll
       class="content"
       ref="scroll"
@@ -11,13 +15,16 @@
       @scroll="contentScroll"
       @loadMore="loadMoreData"
     >
-      <home-swiper :banners="banners"></home-swiper>
+      <home-swiper
+        :banners="banners"
+        @swiperImgLoad="swiperImgLoad"
+      ></home-swiper>
       <home-recommend :recommends="recommends"></home-recommend>
       <feature></feature>
       <tab-control
         @tabControlClick="tabControlClick"
         :title="['流行', '新款', '精选']"
-        class="tab-control"
+        ref="tabControl2"
       ></tab-control>
       <good-list :goods="goods[currenttype].list"></good-list>
     </better-scroll>
@@ -61,6 +68,8 @@ export default {
       },
       currenttype: "pop",
       backshow: "false",
+      tabOffsetTop: 0,
+      isTabFixed: false,
     };
   },
   created() {
@@ -83,8 +92,13 @@ export default {
   methods: {
     //监听滚动
     contentScroll(position) {
+      //1.判断BackTop是否显示
       position.y < -1000 ? (this.backshow = true) : (this.backshow = false);
-      // console.log(this.backshow);
+
+      //2.决定tapcontrol是否吸顶
+      this.isTabFixed = -position.y > this.tabOffsetTop;
+      // console.log(-position.y);
+      // console.log(this.tabOffsetTop);
     },
 
     //网络请求
@@ -116,42 +130,51 @@ export default {
     //   this.$refs.scroll.scroll.refresh();
     // },
 
-    //数据传递
+    //点击请求数据传递
     tabControlClick(index) {
       this.currenttype = Object.keys(this.goods)[index];
-      console.log(Object.keys(this.goods)[index]);
+      // console.log(Object.keys(this.goods)[index]);
+      this.$refs.tabControl1.currentIndex = index;
+      this.$refs.tabControl2.currentIndex = index;
+      // console.log(this.$refs.tabControl1.currentIndex);
+      // console.log(this.$refs.tabControl2.currentIndex);
     },
     backTop() {
       // console.log(this.$refs.scroll.scroll.scrollTo);
       this.$refs.scroll.scrollTo(0, 0, 2000);
+    },
+
+    //赋值
+    swiperImgLoad() {
+      console.log(this.$refs.tabControl2.$el.offsetTop);
+      this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
     },
   },
 };
 </script>
 <style scoped>
 #home {
-  padding-top: 44px;
+  /* padding-top: 44px; */
   height: 100vh;
+  position: relative;
 }
 .home-nav {
   background-color: var(--color-tint);
   color: white;
   font-weight: 500;
   font-size: 18px;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: 9;
-}
-.tab-control {
-  position: sticky;
-  top: 44px;
-  z-index: 6;
+  /* position: fixed;
+  z-index: 9; */
 }
 .content {
   height: calc(100% - 49px);
   overflow: hidden;
-  /* margin-top: 44px; */
+  position: absolute;
+  top: 44px;
+}
+.tab-control {
+  position: inherit;
+  /* top: 44px; */
+  z-index: 9;
 }
 </style>

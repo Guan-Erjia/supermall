@@ -65,7 +65,7 @@ export default {
 <style scoped>
 .wrapper {
   /* height: 150px; */
-  background-color: cornsilk;
+  /* background-color: cornsilk; */
   overflow: hidden;
 }
 </style>
