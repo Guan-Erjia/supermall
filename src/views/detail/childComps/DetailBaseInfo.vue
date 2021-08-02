@@ -18,7 +18,8 @@
     </div>
     <div class="services">
       <span class="service" v-for="index in goodsInfo.services.length - 1">
-        <img :src="goodsInfo.services[index - 1].icon" alt="" />
+        <!-- <img :src="goodsInfo.services[index - 1].icon" alt="" /> -->
+        <img :src="goodsInfo.services[1].icon" alt="" />
         <span>{{ goodsInfo.services[index - 1].name }}</span>
       </span>
     </div>
@@ -82,12 +83,13 @@ export default {
 }
 .services {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  font-size: 10px;
   line-height: 60px;
 }
 .service img {
   width: 14px;
+  top: 2px;
   height: 14px;
 }
 .service span {

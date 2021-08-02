@@ -1,47 +1,28 @@
 <template>
   <div id="detail">
-    <nav-bar></nav-bar>
-    <detail-swiper :top-images="topImages"></detail-swiper>
-    <detail-base-info :goodsInfo="goods"></detail-base-info>
-    <detail-shop-info :shopInfo="shop"></detail-shop-info>
-    <li>1</li>
-    <li>2</li>
-    <li>3</li>
-    <li>4</li>
-    <li>5</li>
-    <li>6</li>
-    <li>7</li>
-    <li>8</li>
-    <li>9</li>
-    <li>10</li>
-    <li>11</li>
-    <li>12</li>
-    <li>13</li>
-    <li>14</li>
-    <li>15</li>
-    <li>16</li>
-    <li>17</li>
-    <li>18</li>
-    <li>19</li>
-    <li>20</li>
-    <li>21</li>
-    <li>22</li>
-    <li>23</li>
-    <li>24</li>
-    <li>25</li>
-    <li>26</li>
-    <li>27</li>
-    <li>28</li>
-    <li>29</li>
-    <li>30</li>
+    <detail-nav-bar class="detail-nav"></detail-nav-bar>
+    <better-scroll
+      class="content"
+      :probeType="3"
+      :pullUpLoad="true"
+      ref="scroll"
+      @loadMore="refresh"
+    >
+      <detail-swiper :top-images="topImages"></detail-swiper>
+      <detail-base-info :goodsInfo="goods"></detail-base-info>
+      <detail-shop-info :shopInfo="shop"></detail-shop-info>
+      <detail-recommend :recommend="recommend"></detail-recommend>
+    </better-scroll>
   </div>
 </template>
 <script>
-import NavBar from "@/views/detail/childComps/DetailNavBar";
-import { getDetailData, Goods, Shop } from "@/network/detail";
+import DetailNavBar from "@/views/detail/childComps/DetailNavBar";
+import { getDetailData, Goods, Shop, Recommend } from "@/network/detail";
 import DetailSwiper from "@/views/detail/childComps/DetailSwiper";
 import DetailBaseInfo from "@/views/detail/childComps/DetailBaseInfo";
 import DetailShopInfo from "@/views/detail/childComps/DetailShopInfo";
+import DetailRecommend from "@/views/detail/childComps/DetailRecommend";
+import BetterScroll from "@/components/common/betterscroll/BetterScroll";
 
 export default {
   name: "Detail",
@@ -51,13 +32,16 @@ export default {
       topImages: [],
       goods: {},
       shop: {},
+      recommend: {},
     };
   },
   components: {
-    NavBar,
+    DetailNavBar,
     DetailSwiper,
     DetailBaseInfo,
     DetailShopInfo,
+    DetailRecommend,
+    BetterScroll,
   },
   created() {
     this.iid = this.$route.params.iid;
@@ -69,12 +53,35 @@ export default {
         res.result.shopInfo.services
       );
       this.shop = new Shop(res.result.shopInfo);
-      console.log(this.shop);
-      // console.log(this.goods);
+      this.recommend = new Recommend(res.result.detailInfo);
+      console.log(res.result.detailInfo);
     });
   },
   methods: {
-    //返回上一层
+    refresh() {
+      this.$refs.scroll.scroll.refresh();
+      this.$refs.scroll.scroll.finishPullUp();
+    },
   },
 };
 </script>
+<style scoped>
+#detail {
+  position: relative;
+  z-index: 9;
+  background-color: #fff;
+  height: 100vh;
+}
+
+.detail-nav {
+  position: relative;
+  z-index: 6;
+}
+
+.content {
+  height: calc(100% - 44px);
+  position: absolute;
+  top: 44px;
+  overflow: hidden;
+}
+</style>

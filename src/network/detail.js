@@ -32,3 +32,10 @@ export class Shop {
     this.goodsCount = shopInfo.cGoods;
   }
 }
+
+export class Recommend {
+  constructor(recommend) {
+    this.desc = recommend.desc;
+    this.detailImage = recommend.detailImage;
+  }
+}

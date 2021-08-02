@@ -8,7 +8,13 @@
     <div class="shop-desc">
       <div class="shop-desc-left">
         <div class="sell">
-          <div class="number">{{ (shopInfo.sells / 10000).toFixed(1) }}万</div>
+          <div class="number">
+            {{
+              shopInfo.sells > 10000
+                ? (shopInfo.sells / 10000).toFixed(1)+'万'
+                : shopInfo.sells
+            }}
+          </div>
           <div class="text">总销量</div>
         </div>
         <div class="allgoods">

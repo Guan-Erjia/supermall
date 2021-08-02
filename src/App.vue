@@ -19,6 +19,6 @@ export default {
 <style>
 @import "./assets/css/base.css";
 .maintabbar {
-  z-index: 10;
+  z-index: 0;
 }
 </style>
