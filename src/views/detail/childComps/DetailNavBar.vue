@@ -33,8 +33,8 @@ export default {
   },
   methods: {
     titleClick(index) {
-      console.log(index);
       this.currentIndex = index;
+      this.$emit("titleClick", index);
     },
     //返回上一层
     leftClick() {

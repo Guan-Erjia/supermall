@@ -18,7 +18,6 @@
   </div>
 </template>
 <script>
-import { debounce } from "@/common/utils";
 export default {
   name: "DetailRecommend",
   props: {
@@ -31,7 +30,7 @@ export default {
   },
   methods: {
     Imgload() {
-      console.log("aaa");
+      this.$bus.$emit("ImgLoaded");
     },
   },
 };
@@ -63,5 +62,8 @@ export default {
 .recommend-info-key {
   margin: 10px;
   margin-left: 15px;
+}
+.recommend-title {
+  margin: 0px 5px;
 }
 </style>

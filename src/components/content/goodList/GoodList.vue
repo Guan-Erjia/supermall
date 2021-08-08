@@ -1,6 +1,10 @@
 <template>
   <div class="goodlist">
-    <good-list-item v-for="each in goods" :goodsItem="each"></good-list-item>
+    <good-list-item
+      v-for="(each, index) in goods"
+      :goodsItem="each"
+      :key="index"
+    ></good-list-item>
   </div>
 </template>
 <script>
@@ -19,9 +23,9 @@ export default {
   components: {
     GoodListItem,
   },
-  // created() {
-  //   console.log(this.goods);
-  // },
+  created() {
+    console.log(this.goods);
+  },
 };
 </script>
 <style scoped>

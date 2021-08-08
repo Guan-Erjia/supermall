@@ -70,6 +70,7 @@ export default {
       backshow: "false",
       tabOffsetTop: 0,
       isTabFixed: false,
+      itemImgListener: null,
     };
   },
   created() {
@@ -81,13 +82,13 @@ export default {
   mounted() {
     //监听图片加载完成
     const refresh = debounce(this.$refs.scroll.refresh, 500);
-
-    this.$bus.$on("ImgLoaded", () => {
+    this.itemImgListener = () => {
       refresh();
-      // this.$refs.scroll &&
-      //   this.$refs.scroll.scroll.refresh() &&
-      // console.log(this.$refs.scroll.scroll);
-    });
+    };
+    this.$bus.$on("ImgLoaded", this.itemImgListener);
+  },
+  deactivated() {
+    this.$bus.$off("ImgLoaded", this.itemImgListener);
   },
   methods: {
     //监听滚动
@@ -97,8 +98,6 @@ export default {
 
       //2.决定tapcontrol是否吸顶
       this.isTabFixed = -position.y > this.tabOffsetTop;
-      // console.log(-position.y);
-      // console.log(this.tabOffsetTop);
     },
 
     //网络请求
@@ -115,7 +114,7 @@ export default {
         this.goods[type].list.push(...response.data.list);
         this.goods[type].page += 1;
         //刷新BetterScroll
-        // this.$refs.scroll.scroll.refresh();
+        this.$refs.scroll.scroll.refresh();
         // console.log(this.$refs.scroll);
       });
     },
@@ -126,9 +125,6 @@ export default {
       // // 刷新监听
       this.$refs.scroll.finishPullUp();
     },
-    // RefreshScroll() {
-    //   this.$refs.scroll.scroll.refresh();
-    // },
 
     //点击请求数据传递
     tabControlClick(index) {
