@@ -2,8 +2,8 @@
   <div id="cart-list-item">
     <div class="button">
       <check-button
+        :is-checked="product.checked"
         @click.native="checkClick"
-        :ischecked="isshow"
       ></check-button>
     </div>
     <img class="img" :src="product.image" alt="" />
@@ -25,16 +25,9 @@ export default {
   components: {
     CheckButton,
   },
-  data() {
-    return {
-      isshow: false,
-    };
-  },
   methods: {
     checkClick() {
       this.product.checked = !this.product.checked;
-      this.isshow = this.product.checked;
-      // console.log(this.isshow);
     },
   },
   props: {
@@ -68,6 +61,9 @@ export default {
   background-size: cover;
   border-radius: 10px;
   max-height: 100%;
+}
+.img img {
+  width: 100px;
 }
 .goods-info {
   width: 65%;

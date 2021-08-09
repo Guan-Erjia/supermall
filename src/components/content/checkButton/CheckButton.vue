@@ -1,21 +1,16 @@
 <template>
-  <div class="check-button" :class="{ ischoosed: ischecked }">
+  <div class="check-button" :class="{ ischoosed: isChecked }">
     <img src="@/assets/img/cart/uncheck.png" alt="" />
   </div>
 </template>
 <script>
 export default {
   name: "CheckButton",
-  data() {
-    return {
-      isshow: true,
-    };
-  },
   props: {
-    ischecked: {
+    isChecked: {
       type: Boolean,
       default() {
-        return true;
+        return false;
       },
     },
   },
@@ -23,7 +18,7 @@ export default {
 </script>
 <style scoped>
 .check-button img {
-  width: 30px;
+  width: 25px;
   background-color: lightpink;
   border-radius: 100%;
 }

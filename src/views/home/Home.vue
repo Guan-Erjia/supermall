@@ -122,7 +122,7 @@ export default {
     //加载更多
     loadMoreData() {
       this.getHomeGoods(this.currenttype);
-      // // 刷新监听
+      // 刷新监听
       this.$refs.scroll.finishPullUp();
     },
 

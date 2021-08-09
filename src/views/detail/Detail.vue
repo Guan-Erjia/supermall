@@ -28,6 +28,7 @@
       @addToCart="addtocart"
       @buyGoods="buygoods"
     ></detail-bottom-bar>
+    <toast :message="message" :show="show"></toast>
   </div>
 </template>
 <script>
@@ -49,6 +50,7 @@ import DetailBottomBar from "@/views/detail/childComps/DetailBottomBar";
 
 import GoodList from "@/components/content/goodList/GoodList";
 import BetterScroll from "@/components/common/betterscroll/BetterScroll";
+import Toast from "@/components/common/toast/Toast";
 import { debounce } from "@/common/utils";
 
 import { backTopMixin } from "@/common/mixin";
@@ -70,6 +72,8 @@ export default {
       //防抖回调部分
       DetailImgListener: null,
       changeIndex: null,
+      message: "",
+      show: false,
     };
   },
   components: {
@@ -83,6 +87,7 @@ export default {
     DetailBottomBar,
     BetterScroll,
     GoodList,
+    Toast,
   },
   created() {
     this.iid = this.$route.params.iid;
@@ -110,7 +115,7 @@ export default {
     this.$bus.$on("ImgLoaded", () => this.DetailImgListener());
     //封装防抖函数
     this.changeIndex = debounce(this.changePos, 1000);
-    console.log("aaa");
+    // console.log("aaa");
   },
   destroyed() {
     this.$bus.$off("ImgLoaded");
@@ -123,7 +128,9 @@ export default {
       product.desc = this.goods.desc;
       product.price = this.goods.realPrice;
       product.iid = this.iid;
-      this.$store.dispatch("addCart", product);
+      this.$store.dispatch("addCart", product).then((res) => {
+        this.$toast.show(res, 2000);
+      });
     },
     buygoods() {
       console.log("购买");
@@ -134,7 +141,6 @@ export default {
       this.themeTopYs[2] = this.$refs.comment.$el.offsetTop;
       this.themeTopYs[3] = this.$refs.goodrecommend.$el.offsetTop;
       this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 1000);
-      console.log(this.themeTopYs);
     },
     //防抖函数回调
     changePosition(position) {
@@ -146,25 +152,26 @@ export default {
 
     //源函数
     changePos(position) {
-      this.themeTopYs[1] = this.$refs.param.$el.offsetTop;
-      this.themeTopYs[2] = this.$refs.comment.$el.offsetTop;
-      this.themeTopYs[3] = this.$refs.goodrecommend.$el.offsetTop;
-      console.log("!!!");
-      for (let index = 0; index < this.themeTopYs.length; index++) {
-        if (
-          this.$refs.nav.currentIndex !== index &&
-          -position.y >= this.themeTopYs[index] &&
-          -position.y < this.themeTopYs[index + 1]
-        ) {
-          this.$refs.nav.currentIndex = index;
-          console.log(index);
-        } else if (
-          this.$refs.nav.currentIndex !== index &&
-          index === this.themeTopYs.length - 1 &&
-          -position.y >= this.themeTopYs[index]
-        ) {
-          this.$refs.nav.currentIndex = index;
-          console.log(index);
+      if (this.themeTopYs) {
+        this.themeTopYs[1] = this.$refs.param.$el.offsetTop;
+        this.themeTopYs[2] = this.$refs.comment.$el.offsetTop;
+        this.themeTopYs[3] = this.$refs.goodrecommend.$el.offsetTop;
+        for (let index = 0; index < this.themeTopYs.length; index++) {
+          if (
+            this.$refs.nav.currentIndex !== index &&
+            -position.y >= this.themeTopYs[index] &&
+            -position.y < this.themeTopYs[index + 1]
+          ) {
+            this.$refs.nav.currentIndex = index;
+            // console.log(index);
+          } else if (
+            this.$refs.nav.currentIndex !== index &&
+            index === this.themeTopYs.length - 1 &&
+            -position.y >= this.themeTopYs[index]
+          ) {
+            this.$refs.nav.currentIndex = index;
+            // console.log(index);
+          }
         }
       }
     },

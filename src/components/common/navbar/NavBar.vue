@@ -6,23 +6,26 @@
   </div>
 </template>
 <script >
-export default
-{
-  name:'NavBar',
-}
+export default {
+  name: "NavBar",
+};
 </script>
 <style scoped>
- .nav-bar{
-   display: flex;
-   height: 44px;
-   line-height: 44px;
-   text-align: center;
-   box-shadow: 0 0px 5px rgba(100,100,100,.6);
- }
- .left,.right{
-   width:60px;
- }
- .center{
-   flex: 1;
- }
+.nav-bar {
+  display: flex;
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  box-shadow: 0 0px 5px rgba(100, 100, 100, 0.6);
+  color: white;
+  background-color: var(--color-tint);
+  font-size: 18px;
+}
+.left,
+.right {
+  width: 60px;
+}
+.center {
+  flex: 1;
+}
 </style>

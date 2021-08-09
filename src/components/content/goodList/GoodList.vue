@@ -1,5 +1,5 @@
 <template>
-  <div class="goodlist">
+  <div class="goodlist" v-if="goods">
     <good-list-item
       v-for="(each, index) in goods"
       :goodsItem="each"
@@ -23,7 +23,7 @@ export default {
   components: {
     GoodListItem,
   },
-  created() {
+  mounted() {
     console.log(this.goods);
   },
 };

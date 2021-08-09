@@ -10,23 +10,25 @@ export default new Vuex.Store({
   mutations: {
     addCounter(state, payload) {
       payload.count++
-      console.log(payload.count)
     },
     addToCart(state, payload) {
-      state.cartList.push(payload)
       payload.checked = true
-      console.log(payload.count)
+      state.cartList.push(payload)
     }
   },
   actions: {
     addCart(context, payload) {
-      let additem = context.state.cartList.find(each => each.iid === payload.iid);
-      if (additem) {
-        context.commit('addCounter', additem)
-      } else {
-        payload.count = 1
-        context.commit('addToCart', payload)
-      }
+      return new Promise((resolve, reject) => {
+        let additem = context.state.cartList.find(each => each.iid === payload.iid);
+        if (additem) {
+          context.commit('addCounter', additem)
+          resolve('当前的商品数量+1')
+        } else {
+          payload.count = 1
+          context.commit('addToCart', payload)
+          resolve('添加了新的商品')
+        }
+      })
     }
   },
   getters: {
