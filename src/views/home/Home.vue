@@ -142,7 +142,7 @@ export default {
 
     //赋值
     swiperImgLoad() {
-      console.log(this.$refs.tabControl2.$el.offsetTop);
+      console.log("标题高度提取：" + this.$refs.tabControl2.$el.offsetTop);
       this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
     },
   },

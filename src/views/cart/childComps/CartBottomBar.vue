@@ -10,7 +10,7 @@
       <span>全选</span>
     </div>
     <div class="total-price">合计:￥{{ totalPrice }}</div>
-    <div class="calc">去计算({{ totalcount }})</div>
+    <div class="calc" @click="calcClick">去计算({{ totalcount }})</div>
   </div>
 </template>
 <script>
@@ -60,17 +60,20 @@ export default {
   },
   methods: {
     allClick() {
+      this.allCheck = !this.everycheck;
       for (let a = 0; a < this.$store.state.cartList.length; a++) {
         this.$store.state.cartList[a].checked = this.allCheck;
       }
-      this.allCheck = !this.allCheck;
     },
     calcClick() {
-      let a = true;
+      let b = true;
       for (let a = 0; a < this.$store.state.cartList.length; a++) {
         if (this.$store.state.cartList[a].checked) {
-          a = false;
+          b = false;
         }
+      }
+      if (b) {
+        this.$toast.show("请选择要购买的商品", 2000);
       }
     },
   },

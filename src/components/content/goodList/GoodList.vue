@@ -23,9 +23,6 @@ export default {
   components: {
     GoodListItem,
   },
-  mounted() {
-    console.log(this.goods);
-  },
 };
 </script>
 <style scoped>

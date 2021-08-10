@@ -24,7 +24,7 @@ export default {
     SwiperLoad() {
       if (!this.isLoad) {
         this.$emit("swiperImgLoad");
-        console.log("swiper-loaded");
+        // console.log("swiper-loaded");
         this.isLoad = true;
       }
     },
