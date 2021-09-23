@@ -91,6 +91,7 @@ export default {
   },
   created() {
     this.iid = this.$route.params.iid;
+    console.log(this.$route.params);
     getDetailData(this.iid).then((res) => {
       this.topImages = res.result.itemInfo.topImages;
       this.goods = new Goods(
